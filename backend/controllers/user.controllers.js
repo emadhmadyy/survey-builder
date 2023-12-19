@@ -20,7 +20,6 @@ const login = async (req, res) => {
   const token = jwt.sign(
     {
       ...userDetails,
-      _id,
     },
     process.env.SECRET_KEY,
     { expiresIn: "2 days" }
@@ -42,7 +41,7 @@ const register = async (req, res) => {
   if (existingUser) {
     return res
       .status(400)
-      .json({ message: "User with this email already exists" });
+      .send({ message: "User with this email already exists" });
   }
   try {
     // const user = await User.create({ username, password, firstName, lastName });

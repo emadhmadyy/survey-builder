@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Question = require("./question.model.js");
 
 const surveyschema = new mongoose.Schema({
   title: {
@@ -7,10 +6,17 @@ const surveyschema = new mongoose.Schema({
     required: true,
     minlength: 5,
   },
-  questions: {
-    type: [],
-    required: true,
-  },
+  questions: [
+    {
+      _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+      question_text: { type: String, required: true },
+      question_type: { type: String, required: true },
+      options: { type: [String] },
+      scale: { type: Number },
+    },
+  ],
 });
 
 const Survey = mongoose.model("Survey", surveyschema);
+
+module.exports = Survey;

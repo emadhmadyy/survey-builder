@@ -28,6 +28,9 @@ const userschema = new mongoose.Schema({
     required: true,
     maxlength: 1,
   },
+  profile_url: {
+    type: String,
+  },
 });
 
 userschema.pre(

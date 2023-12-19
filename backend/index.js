@@ -11,7 +11,10 @@ app.get("/", function (req, res) {
 const userRoutes = require("./routes/user.routes.js");
 app.use("/user", userRoutes);
 
-// const authMiddleware = require("./middleware/auth.middleware.js");
+const surveyRoutes = require("./routes/survey.routes.js");
+const authMiddleware = require("./middlewares/auth.middleware.js");
+app.use("/survey", authMiddleware, surveyRoutes);
+
 // const person = require("./routes/person.routes.js");
 // app.use("/add", person);
 
