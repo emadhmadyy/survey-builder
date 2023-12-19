@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const connectToMongoDb = () => {
-  mongoose.connect("mongodb://localhost:27017/todo_db");
+  mongoose.connect(process.env.MONGODB_URL);
   const connection = mongoose.connection;
-  connection.on("error", () => {
+  connection.on("error", (error) => {
     console.log("Error connection to MongoDB: ", error);
   });
   connection.once("open", () => {
