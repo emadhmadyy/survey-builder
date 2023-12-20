@@ -32,9 +32,8 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  console.log(req.body);
-  const { email, password, first_name, last_name, user_type } = req.body;
-  if (!email || !password || !first_name || !last_name || !user_type) {
+  const { email, password, first_name, last_name } = req.body;
+  if (!email || !password || !first_name || !last_name) {
     return res.status(400).send({ message: "all fields are required" });
   }
   const existingUser = await User.findOne({ email });
@@ -51,7 +50,7 @@ const register = async (req, res) => {
       password,
       first_name,
       last_name,
-      user_type,
+      user_type: 1,
     });
 
     await user.save();

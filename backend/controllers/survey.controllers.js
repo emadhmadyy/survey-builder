@@ -30,4 +30,44 @@ const addSurvey = async (req, res) => {
   }
 };
 
-module.exports = { addSurvey };
+const getAllSurveys = async (req, res) => {
+  if (req.user.user_type == 1) {
+    try {
+      const surveyData = await Survey.aggregate([
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            questionsCount: { $size: "$questions" }, // Count the number of questions in the 'questions' array
+          },
+        },
+      ]);
+      res.status(200).send({ surveys: surveyData });
+    } catch (error) {
+      return res.status(400).send({
+        message: "something went wrong " + error,
+      });
+    }
+  } else {
+    return res.status(403).send("Forbidden");
+  }
+};
+
+const getSurvey = async (req, res) => {
+  if (req.user.user_type == 1) {
+    try {
+      const id = req.params.id;
+      const survey = await Survey.findOne({ _id: id });
+
+      res.status(200).send({ survey });
+    } catch (error) {
+      return res.status(400).send({
+        message: "something went wrong " + error,
+      });
+    }
+  } else {
+    return res.status(403).send("Forbidden");
+  }
+};
+
+module.exports = { addSurvey, getAllSurveys, getSurvey };
