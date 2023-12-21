@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { request } from "../../core/apicall";
 import Nav from "../../components/nav";
+import { Link } from "react-router-dom";
 import "./style.css";
 
 const Surveys = () => {
@@ -75,7 +76,15 @@ const Surveys = () => {
           surveys.map((survey) => {
             return (
               <div key={survey._id}>
-                <li className="survey">{survey.title}</li>
+                <li className="survey">
+                  {" "}
+                  <Link
+                    to={`/surveys/${survey._id}`}
+                    style={{ textDecoration: "none", color: "darkblue" }}
+                  >
+                    {survey.title}
+                  </Link>{" "}
+                </li>
                 <hr />
               </div>
             );
