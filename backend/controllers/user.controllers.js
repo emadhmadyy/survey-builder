@@ -15,7 +15,12 @@ const login = async (req, res) => {
   if (!isValidPassword)
     return res.status(400).send({ message: "Invalid email/password" });
 
-  const { password: hashedPassword, _id, ...userDetails } = user.toJSON();
+  const {
+    password: hashedPassword,
+    _id,
+    profile_url,
+    ...userDetails
+  } = user.toJSON();
 
   // generate JWT token
   const token = jwt.sign(
@@ -44,8 +49,6 @@ const register = async (req, res) => {
       .send({ message: "User with this email already exists" });
   }
   try {
-    // const user = await User.create({ username, password, firstName, lastName });
-
     const user = new User({
       email,
       password,
