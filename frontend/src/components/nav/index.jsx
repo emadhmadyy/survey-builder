@@ -1,6 +1,6 @@
 import "./style.css";
 // eslint-disable-next-line react/prop-types
-const Nav = ({ imageSrc, onImageClick, onImageUpload }) => {
+const Nav = ({ imageSrc, onImageClick, onImageUpload, username }) => {
   return (
     <div className="flex container">
       <img
@@ -9,9 +9,10 @@ const Nav = ({ imageSrc, onImageClick, onImageUpload }) => {
         alt="survey builder logo"
       />
       <div className="flex info">
-        <h1>Emad Hmady</h1>
+        <h1>{username}</h1>
         <div id="imageContainer" onClick={onImageClick}>
           <input
+            name="profilePicture"
             type="file"
             id="imageInput"
             accept="image/*"

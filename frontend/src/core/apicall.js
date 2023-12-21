@@ -7,13 +7,23 @@ export const request = async ({
   method = "GET",
   body,
   isLogin = false,
+  isImage = false,
 }) => {
   // eslint-disable-next-line no-useless-catch
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: isLogin ? "" : `Bearer ${localStorage.getItem("token")}`,
-    };
+    const headers = isImage
+      ? {
+          "Content-Type": "multipart/form-data",
+          Authorization: isLogin
+            ? ""
+            : `Bearer ${localStorage.getItem("token")}`,
+        }
+      : {
+          "Content-Type": "application/json",
+          Authorization: isLogin
+            ? ""
+            : `Bearer ${localStorage.getItem("token")}`,
+        };
 
     const response = await axios.request({
       url: route,

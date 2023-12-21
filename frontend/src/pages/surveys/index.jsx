@@ -4,28 +4,35 @@ import Nav from "../../components/nav";
 import "./style.css";
 
 const Surveys = () => {
-  console.count("Surveys component rendered");
-  const [surveys, setSurveys] = useState();
+  const [surveys, setSurveys] = useState([]);
   const [imageSrc, setImageSrc] = useState("../../../images/anonymous.webp");
+  const [username, setUserName] = useState("");
 
   const handleImageClick = () => {
     document.getElementById("imageInput").click();
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const input = event.target;
     const file = input.files[0];
 
     if (file) {
-      const reader = new FileReader();
+      try {
+        const formData = new FormData();
+        formData.append("profilePicture", file);
 
-      reader.onload = function (e) {
-        // Update the state with the uploaded image data
-        setImageSrc(e.target.result);
-      };
+        const response = await request({
+          method: "POST",
+          route: "/image/upload",
+          body: formData,
+          isImage: true,
+        });
+        const image_url = response.data.path;
 
-      // Read the file as a data URL
-      reader.readAsDataURL(file);
+        setImageSrc(image_url);
+      } catch (error) {
+        console.error("Error uploading image:", error.message);
+      }
     }
   };
 
@@ -35,18 +42,30 @@ const Surveys = () => {
         const response = await request({
           route: "/survey",
         });
+        const first_name = response.data.user.first_name;
+        const last_name = response.data.user.last_name;
+        setUserName(
+          first_name.charAt(0).toUpperCase() +
+            first_name.slice(1) +
+            " " +
+            last_name.charAt(0).toUpperCase() +
+            last_name.slice(1)
+        );
         setSurveys(response.data.surveys);
+        response.data.user.profile_url
+          ? setImageSrc(response.data.user.profile_url)
+          : "../../../images/anonymous.webp";
       } catch (error) {
         console.error("Error fetching surveys:", error.message);
       }
     };
 
     fetchSurveys();
-  }, []); // Run once when the component mounts
-
+  }, []);
   return (
     <div>
       <Nav
+        username={username}
         imageSrc={imageSrc}
         onImageClick={handleImageClick}
         onImageUpload={handleImageUpload}
