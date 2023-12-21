@@ -42,7 +42,7 @@ const getAllSurveys = async (req, res) => {
           },
         },
       ]);
-      res.status(200).send({ surveys: surveyData });
+      res.status(200).send({ surveys: surveyData, user: req.user });
     } catch (error) {
       return res.status(400).send({
         message: "something went wrong " + error,

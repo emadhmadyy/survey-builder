@@ -1,0 +1,17 @@
+.survey{
+    padding:20px;
+}
+
+hr{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+li{
+    list-style: none;
+}
+
+.surveybody{
+    background-color: lightgray;
+    height: 88vh;
+}

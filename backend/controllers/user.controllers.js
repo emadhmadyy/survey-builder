@@ -3,16 +3,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
 
   // check if user is available in DB
   const user = await User.findOne({ email });
-  if (!user) res.status(400).send({ message: "Invalid email/password" });
+  if (!user) return res.status(400).send({ message: "Invalid email/password" });
 
   // check if password is correct
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword)
-    res.status(400).send({ message: "Invalid username/password" });
+    return res.status(400).send({ message: "Invalid email/password" });
 
   const { password: hashedPassword, _id, ...userDetails } = user.toJSON();
 
@@ -25,7 +26,7 @@ const login = async (req, res) => {
     { expiresIn: "2 days" }
   );
 
-  res.status(200).send({
+  return res.status(200).send({
     user: userDetails,
     token,
   });
